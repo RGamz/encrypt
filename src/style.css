@@ -44,31 +44,6 @@ html, body {
   flex: 1;
 }
 
-/* Textarea fills the form group */
-.textarea {
-  flex: 1;
-  resize: none; /* Prevent manual resizing */
-  background-color: #e3eaf5;
-  border: 1px solid #b0c4de;
-  color: #333333;
-  padding: 15px;
-  font-size: 16px;
-  border-radius: 4px;
-}
-
-/* Adjust the submit button */
-.btn {
-  background-color: #4a90e2;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  align-self: center;
-  margin-top: 20px;
-}
-
 .passwordWindowWrapper {
   display: flex;
   flex-direction: column;

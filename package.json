@@ -26,13 +26,16 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "electron-builder": "^25.1.8",
     "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
     "typescript": "^5.4.2",
     "vite": "^6.0.1",
     "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vue": "^3.4.21",
     "vue-tsc": "^2.0.6"
+  },
+  "dependencies": {
+    "sjcl": "^1.0.8"
   }
 }
