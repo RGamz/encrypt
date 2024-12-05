@@ -69,7 +69,6 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-let win: BrowserWindow | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
 
@@ -83,7 +82,7 @@ async function renderMainWindow() {
   const userFilesDir = path.dirname(process.env.USER_FILE_PATH);
   const filePath = path.resolve(process.env.USER_FILE_PATH);
 
-  win = new BrowserWindow({
+  mainView = new BrowserWindow({
     width: windowWidth,
     height: windowHeight,
     title: 'Main window',
@@ -101,27 +100,27 @@ async function renderMainWindow() {
     fullscreenable: true,
   })
 
-  win.setMinimumSize(200, 200);
-  win.loadFile("./src/windows/main/index.html");
+  mainView.setMinimumSize(200, 200);
+  mainView.loadFile("./src/windows/main/index.html");
 
   if (VITE_DEV_SERVER_URL) { // #298
-    win.loadURL(VITE_DEV_SERVER_URL)
+    mainView.loadURL(VITE_DEV_SERVER_URL)
     // Open devTool if the app is not packaged
-    win.webContents.openDevTools()
+    mainView.webContents.openDevTools()
   } else {
-    win.loadFile(indexHtml)
+    mainView.loadFile(indexHtml)
   }
 
   // Test actively push message to the Electron-Renderer
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
+  mainView.webContents.on('did-finish-load', () => {
+    mainView?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
     // Handle close event for the main window
-    win.on("close", (event) => {
+    mainView.on("close", (event) => {
       if (!app.isQuitting) {
         event.preventDefault();
-        mainView.hide(); // Hide the main window instead of closing
+        mainView.close(); 
       }
     });
 
@@ -197,15 +196,16 @@ async function renderMainWindow() {
 app.whenReady().then(renderMainWindow)
 
 app.on('window-all-closed', () => {
-  win = null
-  if (process.platform !== 'darwin') app.quit()
-})
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
 
 app.on('second-instance', () => {
-  if (win) {
+  if (mainView) {
     // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore()
-    win.focus()
+    if (mainView.isMinimized()) mainView.restore()
+      mainView.focus()
   }
 })
 
