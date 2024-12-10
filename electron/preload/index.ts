@@ -22,12 +22,22 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   // You can expose other APTs you need here.
   // ...
 
-  // submitPassword: (data) => ipcRenderer.send('password-submitted', data),
-  // verifyPassword: (password) => ipcRenderer.send('verify-master-password', password),
-  // onPasswordIncorrect: (callback) => ipcRenderer.on('password-incorrect', callback),
-  // sendAndEncrypt: (text) => ipcRenderer.send('save-and-encrypt-text', text),  // Используем новый обработчик
-  // //create function for send an asynchronous request to main.js
-  // loadText: () => ipcRenderer.invoke('request-load-text'),
+  // Send the password-submitted event to main
+  submitPassword: (data) => {
+    ipcRenderer.send('password-submitted', data)
+  },
+
+  // Send the verify-master-password event to main
+  verifyMasterPassword: (enteredPassword) => {
+    ipcRenderer.send('verify-master-password', enteredPassword)
+  },
+
+  // Listen for a password-incorrect reply from main
+  onPasswordIncorrect: (callback) => {
+    ipcRenderer.on('password-incorrect', () => {
+      callback()
+    })
+  }
 })
 
 // --------- Preload scripts loading ---------
